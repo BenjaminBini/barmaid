@@ -1,0 +1,117 @@
+* {
+  font-family: Arial, sans-serif;
+}
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+input, button, textarea, :focus {
+    outline: none;
+}
+
+button:active {
+  box-shadow: inset 2px 1px 6px 0px #000000;
+}
+
+input {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid;
+  border-right: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+input#folder {
+  width: calc(95% - 115px);
+  padding: 10px;
+  border-color: #2c3e50;
+} 
+
+input#port {
+  width: 60px;
+  font-size: 18px;
+  padding: 7px;
+  border-color: #2ecc71;
+}
+
+button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 11px 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+button#folder-button {
+  width: 115px;
+  background-color: #2c3e50;
+}
+
+button#launch-button {
+  width: 115px;
+  background: #2ba952;
+}
+
+div#port-section {
+  margin-top: 10px;
+  text-align: right;
+}
+
+h2 {
+  font-size: 19px;
+  color: #2c3e50;
+  font-weight: normal;
+  border-bottom: 1px solid #2c3e50;
+  text-align: right;
+  padding-bottom: 2px;
+}
+
+div.status-section {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 12px;
+}
+
+span.status {
+  width: 115px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  background: #e74c3c;
+  color: white;
+  padding: 8px 0;
+  border-radius: 5px;
+}
+
+span.status-folder {
+  border: 1px solid #e74c3c;
+  border-right: none;
+  padding: 7px;
+  display: inline-block;
+  vertical-align: middle;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: #e74c3c;
+  text-align: center;
+}
+
+.running span.status-folder {
+  color: #2ba952;
+  border-color: #2ba952;
+}
+
+.running span.status {
+  background-color: #2ba952;
+  border-color: #2ba952;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "barmaid",
+  "version": "0.0.1",
+  "description": "An easy to use webserver in your menu bar",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron src/main/main.js"
+  },
+  "keywords": [
+    "server",
+    "webserver",
+    "menubar",
+    "tray",
+    "Electron"
+  ],
+  "author": "Benjamin Bini",
+  "license": "MIT",
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0"
+  },
+  "dependencies": {
+    "app-root-path": "^1.0.0",
+    "electron-positioner": "^3.0.0"
+  }
+}

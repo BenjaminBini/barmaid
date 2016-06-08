@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+  </head>
+  <body>
+    <div id="folder-section">
+      <input type="text" placeholder="Select a folder" name="folder" id="folder" /><button id="folder-button">Select a folder</button>
+    </div>
+    <div id="port-section">
+      <label for="port">Choose a port: </label><input type="number" placeholder="Port" name="port" id="port" min="1024" max="40000" value="8080" /><button id="launch-button">GO!</button>
+    </div>
+    <h2>
+      Server status
+    </h2>
+    <div class="status-section">
+        <span class="status">Not running</span>
+    </div>
+    <div class="status-section running">
+        <span class="status-folder">C:\Users\01i345\Documents\Agenda</span><span class="status">Running</span>
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./../src/renderers/main-renderer.js')
+    </script>
+</html>

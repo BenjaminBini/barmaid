@@ -1,77 +1,86 @@
+'use strict';
+
 const electron = require('electron');
-const Positioner = require('electron-positioner')
+const Positioner = require('electron-positioner');
 const {app, dialog, Tray, BrowserWindow, Menu} = electron;
-const ipc = electron.ipcMain;
 const appRoot = require('app-root-path');
+const Server = require('./server.js');
+let windows = [];
 
+let trayIcon = null;
+let contextMenu = null;
 
-// Global reference to the app tray icon
-let trayIcon;
+function startApp() {
+  trayIcon = new Tray(appRoot + '/assets/icons/tray-icon.png');
 
-// Global reference to the app main window
-let mainWindow;
+  var testServer = new Server('server/de/test', 8080, true, {});
+  updateMenu([testServer]);
+  trayIcon.on('click', () => trayIcon.popUpContextMenu(contextMenu));
+}
 
-// Global reference to the window positioner
-let positioner;
-
-function toggleWindow() {
-  if (!mainWindow) {
-    // Create the browser window.
-    mainWindow = new BrowserWindow({width: 453, height: 250, frame: false, skipTaskbar: true, hasShadow: false, resizable: false, alwaysOnTop: true});
-    positioner = new Positioner(mainWindow);
-    positioner.move('bottomRight');
-
-    // and load the index.html of the app.
-    mainWindow.loadURL(appRoot + '/views/main-window.html');
-
-    mainWindow.on('closed', function() {
-      mainWindow = null;
-    });
-
-    //mainWindow.webContents.openDevTools();
-
-  } else {
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    } else {
-      mainWindow.show();
-      mainWindow.focus();
+function updateMenu(servers) {
+  const activeServers = servers.filter(s => s.isActive === true);
+  const stoppedServers = servers.filter(s => s.isActive === false);
+  console.log(servers[0]);
+  let menuTemplate = 
+  [
+    {
+      label: 'Ajouter un serveur'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Serveurs actifs',
+      enabled: false
     }
+  ];
+  for (let server of activeServers) {
+    menuTemplate.push({
+      label: server.path,
+      submenu: getServerSubMenu(server)
+    });
   }
-}
+  menuTemplate.push({
+    type: 'separator'
+  });
+  menuTemplate.push({
+    label: 'Serveurs arrêtés',
+    enabled: false
+  });
+  for (let server of stoppedServers) {
+    menuTemplate.push({
+      label: server.path,
+      submenu: getServerSubMenu(server)
+    });
+  }
+  menuTemplate.push({
+    type: 'separator'
+  });
+  menuTemplate.push({
+    label: 'Quitter',
+    click: quitApp
+  });
 
-function launchApp() {
-  toggleWindow();
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Quitter', 'click': app.quit}
-  ]);  
-  trayIcon = new Tray(appRoot + '/images/tray-icon.png');
-  trayIcon.setToolTip('Click to configure your server');
+  contextMenu = Menu.buildFromTemplate(menuTemplate); 
   trayIcon.setContextMenu(contextMenu);
-  trayIcon.on('click', trayIconClicked);
 }
 
-function trayIconClicked(event, bounds) {
-  positioner.move('trayBottomCenter', bounds);
-  toggleWindow();
+function getServerSubMenu(server) {
+  let serverSubMenuTemplate = [
+    {
+      label: server.isActive ? 'Arrêter le serveur' : 'Démarrer le serveur',
+      click: () => stopServer(server)
+    }
+  ];
+  return Menu.buildFromTemplate(serverSubMenuTemplate);
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', launchApp);
+function quitApp() {
+  app.quit();
+}
 
-app.on('activate', function() {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    toggleWindow();
-  }
-});
+function stopServer(server) {
+  server.stop();
+  updateSubMenu();
+}
 
-ipc.on('open-directory-dialog', function(e) {
-  const window = BrowserWindow.fromWebContents(e.sender);
-  dialog.showOpenDialog(window, {
-    properties: ['openDirectory']
-  }, selectedDirectories => e.sender.send('directories-selected', selectedDirectories));
-});
+app.on('ready', startApp);

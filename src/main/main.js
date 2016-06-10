@@ -14,17 +14,16 @@ let serversManager = new ServersManager();
 
 function startApp() {
   trayIcon = new Tray(path.join(appRoot.toString(), '/assets/icons/tray-icon.png'));
-
+  /*
   serversManager.addServer({
-    path: '/serveur/de/test',
-    port: '8080'
+    path: 'C:/benjamin/test',
+    port: '7070'
   });
-
   serversManager.addServer({
     path: '/autre/serveur/de/test',
     port: '8081'
   });
-
+  */
   updateMenu();
   trayIcon.on('click', () => trayIcon.popUpContextMenu(contextMenu));
   openAddServerDialog();
@@ -111,7 +110,7 @@ function removeServer(server) {
 }
 
 function openAddServerDialog() {
-  let addServerWindow = new BrowserWindow({width: 250, height: 400, resizable: false, show: false, autoHideMenuBar: true});
+  let addServerWindow = new BrowserWindow({title: 'Ajouter un serveur', width: 250, height: 330, resizable: false, show: false, autoHideMenuBar: true});
   addServerWindow.loadURL(path.join(appRoot.toString(), '/views/add-server.html'));
   addServerWindow.show();
   //addServerWindow.openDevTools();
@@ -129,6 +128,7 @@ ipcMain.on('add-server', (event, arg) => {
     updateMenu();
     event.sender.send('server-added');
   } catch (exception) {
+    console.log(exception);
     event.sender.send('server-not-added', exception.message);
   }
 });

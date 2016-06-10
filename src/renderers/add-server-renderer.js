@@ -7,8 +7,8 @@ let directoryLabel = document.getElementById('directory-label');
 let closeButton = document.getElementById('close-button');
 let saveButton = document.getElementById('save-button');
 let portInput = document.getElementById('port-input');
-let indexInput = document.getElementById('index-input');
-let downloadInput = document.getElementById('download-input');
+//let indexInput = document.getElementById('index-input');
+//let downloadInput = document.getElementById('download-input');
 let startInput = document.getElementById('start-input');
 
 directoryButton.addEventListener('click', (e) => {
@@ -31,8 +31,8 @@ saveButton.addEventListener('click', () => {
   let options = {
     path: directoryInput.value,
     port: portInput.value,
-    autoIndex: indexInput.checked,
-    download: downloadInput.checked,
+    //autoIndex: indexInput.checked,
+    //download: downloadInput.checked,
     isActive: startInput.checked
   }
 
@@ -45,7 +45,7 @@ ipcRenderer.on('server-added', () => {
 
 ipcRenderer.on('server-not-added', (event, arg) => {
   dialog.showMessageBox(remote.getCurrentWindow(), {
-    title: 'An Error Message',
+    title: 'Error',
     message: arg,
     type: 'warning',
     buttons: ['Ok']

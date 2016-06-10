@@ -16,6 +16,7 @@ class ServersManager {
   }
 
   removeServer(server) {
+    server.stop();
     const indexToRemove = this.servers.indexOf(server);
     if (indexToRemove > -1) {
       this.servers.splice(indexToRemove, 1);

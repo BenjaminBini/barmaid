@@ -10,7 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "app-root-path": "^1.0.0",
-    "electron-positioner": "^3.0.0"
+    "electron-positioner": "^3.0.0",
+    "node-static": "^0.7.7"
   },
   "devDependencies": {
     "electron-prebuilt": "^1.2.2"

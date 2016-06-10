@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="../assets/css/photon.css" />
+    <link rel="stylesheet" href="../assets/css/barmaid.css" />
+  </head>
+  <body>
+    <div class="window">
+      <div class="window-content padded-more">
+        <form>
+          <div class="form-group">
+            <label>Répertoire</label>
+            <div id="directory-label">Aucun répertoire sélectionné</div>
+            <div>
+              <input type="hidden" id="directory-input" name="directory" value="">
+              <button id="directory-button" class="btn btn-large btn-primary">Choisir un répertoire</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Port</label>
+            <input type="number" id="port-input" name="port" value="8080" class="form-control">
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" id="start-input" name="start" checked> Démarrer le serveur
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" id="index-input" name="index" checked> Auto-index
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" id="download-input" name="download"> Télécharger les fichiers
+            </label>
+          </div>
+        </form>
+      </div>
+      <footer class="toolbar toolbar-footer">
+        <div class="toolbar-actions">
+          <button id="close-button" class="btn btn-default">
+            Cancel
+          </button>
+
+          <button id="save-button" class="btn btn-primary pull-right">
+            Save
+          </button>
+        </div>
+      </footer>
+    </div>
+  </body>
+
+  <script>
+    require('../src/renderers/add-server-renderer.js')
+  </script>
+</html>

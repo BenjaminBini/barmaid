@@ -7,14 +7,19 @@ class ServersManager {
     this.servers = [];
   }
 
-  addServer(path, port, options) {
-    let server = new Server(path, port, options);
+  addServer(options) {
+    let server = new Server(options);
+    if (this.servers.filter(s => s.port === server.port).length > 0) {
+      throw new Error('Ce port est déjà en cours d\'utilisation');
+    }
     this.servers.push(server);
-    server.start();
   }
 
   removeServer(server) {
-
+    const indexToRemove = this.servers.indexOf(server);
+    if (indexToRemove > -1) {
+      this.servers.splice(indexToRemove, 1);
+    }
   }
 }
 

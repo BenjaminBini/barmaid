@@ -9,6 +9,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "app-root-path": "^1.0.0",
     "electron-positioner": "^3.0.0"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.2"
   }
 }

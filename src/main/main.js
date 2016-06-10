@@ -5,13 +5,15 @@ const Positioner = require('electron-positioner');
 const {app, dialog, Tray, BrowserWindow, Menu} = electron;
 const appRoot = require('app-root-path');
 const Server = require('./server.js');
+const path = require('path');
+
 let windows = [];
 
 let trayIcon = null;
 let contextMenu = null;
 
 function startApp() {
-  trayIcon = new Tray(appRoot + '/assets/icons/tray-icon.png');
+  trayIcon = new Tray(path.join(appRoot.toString(), '/assets/icons/tray-icon.png'));
 
   var testServer = new Server('server/de/test', 8080, true, {});
   updateMenu([testServer]);

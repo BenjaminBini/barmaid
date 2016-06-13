@@ -13,7 +13,11 @@ let contextMenu = null;
 let serversManager = new ServersManager();
 
 function startApp() {
+  if (app.dock) {
+    app.dock.hide();
+  }
   trayIcon = new Tray(path.join(appRoot.toString(), '/assets/icons/tray-icon.png'));
+  trayIcon.setPressedImage(path.join(appRoot.toString(), '/assets/icons/tray-icon-active.png'));
   /*
   serversManager.addServer({
     path: 'C:/benjamin/test',
@@ -111,7 +115,7 @@ function removeServer(server) {
 
 function openAddServerDialog() {
   let addServerWindow = new BrowserWindow({title: 'Ajouter un serveur', width: 250, height: 330, resizable: false, show: false, autoHideMenuBar: true});
-  addServerWindow.loadURL(path.join(appRoot.toString(), '/views/add-server.html'));
+  addServerWindow.loadURL('file:' + appRoot.toString() + '/views/add-server.html');
   addServerWindow.show();
   //addServerWindow.openDevTools();
 }

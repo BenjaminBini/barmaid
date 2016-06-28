@@ -1,6 +1,6 @@
 # Barmaid
 
-A small Mac GUI app to create a static webserver on your machine. Select a directory, choose a port and you're done.
+A small Mac GUI app to create a static webserver on your machine. Select a directory, choose a port and you're done: go to http://localhost:XXXX where XXXX is the port you chose.
 
 ## Download
 

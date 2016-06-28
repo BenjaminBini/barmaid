@@ -1,16 +1,19 @@
 {
   "name": "barmaid",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron src/main/main.js"
   },
-  "author": "",
+  "author": "Benjamin Bini",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenjaminBini/barmaid"
+  },
   "license": "MIT",
   "dependencies": {
     "app-root-path": "^1.0.0",
-    "electron-positioner": "^3.0.0",
     "node-static": "^0.7.7"
   },
   "devDependencies": {

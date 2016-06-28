@@ -4,7 +4,7 @@ A small Mac GUI app to create a static webserver on your machine. Select a direc
 
 ## Download
 
-You can download the app from the release tag or by following [this link](https://github.com/BenjaminBini/barmaid/releases/download/1.0.0/barmaid.app.zip).
+You can download the app from the release tab or by following [this link](https://github.com/BenjaminBini/barmaid/releases/download/1.0.0/barmaid.app.zip).
 
 ## Screenshots
 

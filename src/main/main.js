@@ -1,7 +1,6 @@
 'use strict';
 
 const electron = require('electron');
-const Positioner = require('electron-positioner');
 const {app, dialog, ipcMain, Tray, BrowserWindow, Menu} = electron;
 const appRoot = require('app-root-path');
 const ServersManager = require('./servers-manager');
@@ -19,19 +18,10 @@ function startApp() {
   }
   trayIcon = new Tray(path.join(appRoot.toString(), '/assets/icons/tray-icon.png'));
   trayIcon.setPressedImage(path.join(appRoot.toString(), '/assets/icons/tray-icon-active.png'));
-  /*
-  serversManager.addServer({
-    path: 'C:/benjamin/test',
-    port: '7070'
-  });
-  serversManager.addServer({
-    path: '/autre/serveur/de/test',
-    port: '8081'
-  });
-  */
+
   updateMenu();
   trayIcon.on('click', () => trayIcon.popUpContextMenu(contextMenu));
-  //openAddServerDialog();
+
 }
 
 function updateMenu() {
@@ -125,7 +115,6 @@ function openAddServerDialog() {
   });
   addServerWindow.loadURL('file:' + appRoot.toString() + '/views/add-server.html');
   addServerWindow.focus();
-  //addServerWindow.openDevTools();
 }
 
 app.on('window-all-closed', e => {

@@ -1,3 +1,0 @@
-# Barmaid
-
-*Work in progress*

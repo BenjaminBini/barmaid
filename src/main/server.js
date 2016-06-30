@@ -4,6 +4,7 @@ const extend = require('extend');
 const http = require('http');
 var express = require('express');
 var path = require('path');
+var uuid = require('node-uuid');
 
 class Server {
   /**
@@ -21,6 +22,8 @@ class Server {
       throw new Error('You have to chose a port'); 
     }
 
+    this.id = uuid.v1();
+
     let defaultOptions = {
       isActive: false,
       pug: false
@@ -30,26 +33,33 @@ class Server {
 
     extend(defaultOptions, options);
 
-    this.path = defaultOptions.path;
-    this.port = defaultOptions.port;
+    this.params = {
+      path: defaultOptions.path,
+      port: defaultOptions.port,
+      pug: defaultOptions.pug
+    };
+
     this.isActive = defaultOptions.isActive;
-    this.pug = defaultOptions.pug;
     //this.autoIndex = defaultOptions.autoIndex;
     //this.download = defaultOptions.download;
 
     // Create express app
     this._app = express();
 
-    // Use pug template engine
-    if (this.pug) {
-      this._app.set('view engine', 'pug');
+    // Configure template engines
+    this._app.set('view engine', 'pug');
+    this._app.set('views', this.params.path);
+
+
+    // Pug middlware
+    if (this.params.pug) {
       this._app.use('*.pug', (req, res, next) => {
-        res.render(path.join(this.path, req.originalUrl));
+        res.render(path.join(this.params.path, req.originalUrl));
       });
     }
 
     // Set middleware for static files
-    this._app.use(express.static(this.path));
+    this._app.use(express.static(this.params.path));
 
     // Create the static server
     this._createServer();
@@ -64,15 +74,15 @@ class Server {
    */
   start() {
     this.isActive = true;
-    this._server.listen(this.port);
+    this._server.listen(this.params.port);
   }
 
   /**
    * Stop the server
    */
-  stop() {
+  stop(callback) {
     this.isActive = false;
-    this._killServer();
+    this._killServer(callback);
   }
 
   /**
@@ -80,7 +90,7 @@ class Server {
    */
   _createServer() {
     // Listen to the port and save the http native server
-    this._server = this._app.listen(this.port)
+    this._server = this._app.listen(this.params.port)
 
     // Keep track of sockets to be able to close 
     // all of them when we want to close the server
@@ -102,13 +112,13 @@ class Server {
   /**
    * Close the server and destroy all the open sockets
    */
-  _killServer() {
+  _killServer(callback) {
     // Destroy all open sockets
     for (var socketId in this._sockets) {
       this._sockets[socketId].destroy();
     }
     // Close the server
-    this._server.close();
+    this._server.close(callback);
   };
 }
 

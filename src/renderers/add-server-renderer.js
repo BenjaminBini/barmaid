@@ -12,6 +12,11 @@ let pugInput = document.getElementById('pug-input');
 //let downloadInput = document.getElementById('download-input');
 let startInput = document.getElementById('start-input');
 
+let server = undefined;
+if (remote.getCurrentWindow().server) {
+  server = remote.getCurrentWindow().server;
+}
+
 directoryButton.addEventListener('click', (e) => {
   e.preventDefault();
   dialog.showOpenDialog(remote.getCurrentWindow(), {
@@ -35,10 +40,15 @@ saveButton.addEventListener('click', () => {
     pug: pugInput.checked,
     //autoIndex: indexInput.checked,
     //download: downloadInput.checked,
-    isActive: startInput.checked
+    isActive: startInput.checked,
   }
 
-  ipcRenderer.send('add-server', options);
+  if (server) {
+    options.id = server.id;
+    ipcRenderer.send('edit-server', options);
+  } else {
+    ipcRenderer.send('add-server', options);
+  }
 });
 
 ipcRenderer.on('server-added', () => {
@@ -54,3 +64,11 @@ ipcRenderer.on('server-not-added', (event, arg) => {
     icon: arg.icon
   });
 });
+
+if (server) {
+  directoryInput.value = server.params.path;
+  directoryLabel.innerHTML = server.params.path;
+  portInput.value = server.params.port;
+  pugInput.checked = server.params.pug;
+  startInput.checked = server.isActive;
+}

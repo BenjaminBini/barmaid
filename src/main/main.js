@@ -41,8 +41,8 @@ function updateMenu() {
   ];
   for (let server of activeServers) {
     menuTemplate.push({
-      label: server.path,
-      sublabel: server.port,
+      label: server.params.path,
+      sublabel: server.params.port,
       submenu: getServerSubMenu(server)
     });
   }
@@ -55,8 +55,8 @@ function updateMenu() {
   });
   for (let server of stoppedServers) {
     menuTemplate.push({
-      label: server.path,
-      sublabel: server.port,
+      label: server.params.path,
+      sublabel: server.params.port,
       submenu: getServerSubMenu(server)
     });
   }
@@ -75,8 +75,11 @@ function updateMenu() {
 function getServerSubMenu(server) {
   let serverSubMenuTemplate = [
     {
-      label: server.isActive ? 'Running on port ' + server.port : 'Will run on port ' + server.port,
+      label: server.isActive ? 'Running on port ' + server.params.port : 'Will run on port ' + server.params.port,
       enabled: false
+    }, {
+      label: 'Edit the server',
+      click: () => editServer(server)
     },
     {
       label: server.isActive ? 'Stop the server' : 'Start the server',
@@ -104,6 +107,20 @@ function removeServer(server) {
   updateMenu();
 }
 
+function editServer(server) {
+  let editServerWindow = new BrowserWindow({
+    title: 'Edit a server', 
+    width: 250, 
+    height: 355, 
+    resizable: false, 
+    autoHideMenuBar: true, 
+    icon: path.join(__dirname, '/assets/icons/tray-icon.png')
+  });
+  editServerWindow.server = server;
+  editServerWindow.loadURL('file:' + appRoot.toString() + '/views/add-server.html');
+  editServerWindow.focus();
+}
+
 function openAddServerDialog() {
   let addServerWindow = new BrowserWindow({
     title: 'Add a server', 
@@ -127,6 +144,16 @@ ipcMain.on('add-server', (event, arg) => {
   try {
     serversManager.addServer(arg);
     updateMenu();
+    event.sender.send('server-added');
+  } catch (exception) {
+    console.log(exception);
+    event.sender.send('server-not-added', {message: exception.message, icon: path.join(appRoot.toString(), '/assets/icons/tray-icon@4x.png')});
+  }
+});
+
+ipcMain.on('edit-server', (event, arg) => {
+  try {
+    serversManager.editServer(arg, updateMenu);
     event.sender.send('server-added');
   } catch (exception) {
     console.log(exception);

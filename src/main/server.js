@@ -2,10 +2,15 @@
 
 const extend = require('extend');
 const http = require('http');
-var nodeStatic = require('node-static');
+var express = require('express');
+var path = require('path');
 
 class Server {
+  /**
+   * Build our server according to the options
+   */
   constructor(options) {
+    // Path and port are mandatory
     if (!options.path && !options.port) {
       throw new Error('You have to chose a directory and a port');
     }
@@ -18,6 +23,7 @@ class Server {
 
     let defaultOptions = {
       isActive: false,
+      pug: false
       //autoIndex: true,
       //download: false
     }
@@ -27,14 +33,25 @@ class Server {
     this.path = defaultOptions.path;
     this.port = defaultOptions.port;
     this.isActive = defaultOptions.isActive;
+    this.pug = defaultOptions.pug;
     //this.autoIndex = defaultOptions.autoIndex;
     //this.download = defaultOptions.download;
 
+    // Create express app
+    this._app = express();
 
-    // Maintain a hash of all connected sockets, to be able to stop the server
-    this._sockets = {};
-    this._nextSocketId = 0;
+    // Use pug template engine
+    if (this.pug) {
+      this._app.set('view engine', 'pug');
+      this._app.use('*.pug', (req, res, next) => {
+        res.render(path.join(this.path, req.originalUrl));
+      });
+    }
 
+    // Set middleware for static files
+    this._app.use(express.static(this.path));
+
+    // Create the static server
     this._createServer();
 
     if (this.isActive) {
@@ -42,26 +59,34 @@ class Server {
     }
   }
 
+  /**
+   * Start the server
+   */
   start() {
     this.isActive = true;
-    this.staticServer.listen(this.port);
+    this._server.listen(this.port);
   }
 
+  /**
+   * Stop the server
+   */
   stop() {
     this.isActive = false;
     this._killServer();
   }
 
+  /**
+   * Create the http server and initialize the socket tracking
+   */
   _createServer() {
-    const fileServer = new nodeStatic.Server(this.path);
+    // Listen to the port and save the http native server
+    this._server = this._app.listen(this.port)
 
-    this.staticServer = http.createServer((req, res) => {
-      req.addListener('end', () => {
-        fileServer.serve(req, res);
-      }).resume();
-    });
-
-    this.staticServer.on('connection', (socket) => {
+    // Keep track of sockets to be able to close 
+    // all of them when we want to close the server
+    this._sockets = {};
+    this._nextSocketId = 0;
+    this._server.on('connection', (socket) => {
       // Add a newly connected socket
       var socketId = this._nextSocketId++;
       this._sockets[socketId] = socket;
@@ -83,9 +108,8 @@ class Server {
       this._sockets[socketId].destroy();
     }
     // Close the server
-    this.staticServer.close();
+    this._server.close();
   };
 }
 
 module.exports = Server;
-

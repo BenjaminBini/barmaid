@@ -108,7 +108,7 @@ function openAddServerDialog() {
   let addServerWindow = new BrowserWindow({
     title: 'Add a server', 
     width: 250, 
-    height: 330, 
+    height: 355, 
     resizable: false, 
     autoHideMenuBar: true, 
     icon: path.join(__dirname, '/assets/icons/tray-icon.png')

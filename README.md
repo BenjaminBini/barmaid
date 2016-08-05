@@ -8,9 +8,9 @@ You can download the app from the release tab or by following [this link for Mac
 
 ## Screenshots
 
-![](http://static.bini.io/barmaid/screenshots/barmaid-tray.png)
+![](http://static.bini.io/barmaid/screenshots/barmaid-tray.png =500x)
 
-![](http://static.bini.io/barmaid/screenshots/barmaid-window.png)
+![](http://static.bini.io/barmaid/screenshots/barmaid-window.png =500x)
 
 ## From the source
 

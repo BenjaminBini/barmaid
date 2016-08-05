@@ -50,10 +50,13 @@ class Server {
     this._app.set('view engine', 'pug');
     this._app.set('views', this.params.path);
 
-
+    
     // Pug middlware
     if (this.params.pug) {
-      this._app.use('*.pug', (req, res, next) => {
+      // Enable pug template engine for jade extensions too
+      this._app.engines = {'.jade': require('pug').__express};
+      
+      this._app.use(['*.pug', '*.jade'], (req, res, next) => {
         res.render(path.join(this.params.path, req.originalUrl));
       });
     }

@@ -20,7 +20,7 @@ function startApp() {
   trayIcon.setPressedImage(path.join(appRoot.toString(), '/assets/icons/tray-icon-active.png'));
 
   updateMenu();
-  trayIcon.on('click', () => trayIcon.popUpContextMenu(contextMenu));
+  trayIcon.on('click', () => trayIcon.popUpContextMenu());
 
 }
 

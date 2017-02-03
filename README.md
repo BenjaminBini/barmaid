@@ -4,7 +4,7 @@ Barmaid is a cross-platform desktop app that enables you to create a static webs
 
 ## Download
 
-You can download the app from the release tab or by following [this link for Mac](https://github.com/BenjaminBini/barmaid/releases/download/v1.0.0/barmaid.app.zip) or [this one for Windows](https://github.com/BenjaminBini/barmaid/releases/download/v1.0.0/barmaid-win32-x64.zip).
+You can download the app from the release tab or by following [this link for Mac](https://github.com/BenjaminBini/barmaid/releases/download/v1.1.0/barmaid-1.1.0.dmg), [this one for Windows](https://github.com/BenjaminBini/barmaid/releases/download/v1.1.0/barmaid-1.1.0-win.zip) or [this one for Linux](https://github.com/BenjaminBini/barmaid/releases/download/v1.1.0/barmaid-1.1.0-x86_64.AppImage).
 
 ## Screenshots
 

@@ -21,9 +21,11 @@
     "pug": "^2.0.0-beta4"
   },
   "devDependencies": {
-    "7zip-bin-win": "^2.0.2",
     "electron": "^1.4.15",
     "electron-builder": "^12.3.1"
+  },
+  "optionnalDependencies": {
+    "7zip-bin-win": "^2.0.2"
   },
   "build": {
     "appId": "bini.barmaid",
